@@ -1,20 +1,30 @@
 import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 const storiesData = [
-  { id: '1', username: 'budi_s', avatarUrl: 'https://i.pravatar.cc/150?u=user1' },
-  { id: '2', username: 'citra_l', avatarUrl: 'https://i.pravatar.cc/150?u=user2' },
-  { id: '3', username: 'dewi_p', avatarUrl: 'https://i.pravatar.cc/150?u=user3' },
-  { id: '4', username: 'eko_p', avatarUrl: 'https://i.pravatar.cc/150?u=user4' },
-    { id: '5', username: 'budi_s', avatarUrl: 'https://i.pravatar.cc/150?u=user5' },
-  { id: '6', username: 'citra_l', avatarUrl: 'https://i.pravatar.cc/150?u=user6' },
-  { id: '7', username: 'dewi_p', avatarUrl: 'https://i.pravatar.cc/150?u=user7' },
-  { id: '8', username: 'eko_p', avatarUrl: 'https://i.pravatar.cc/150?u=user8' },
+  { id: '1', username: 'budi_s', color: getRandomColor() },
+  { id: '2', username: 'citra_l', color: getRandomColor() },
+  { id: '3', username: 'dewi_p', color: getRandomColor() },
+  { id: '4', username: 'eko_p', color: getRandomColor() },
+  { id: '5', username: 'budi_s', color: getRandomColor() },
+  { id: '6', username: 'citra_l', color: getRandomColor() },
+  { id: '7', username: 'dewi_p', color: getRandomColor() },
+  { id: '8', username: 'eko_p', color: getRandomColor() },
 ];
 
 const postsData = [
-  { id: 'post1', username: 'budi_santoso', avatarUrl: 'https://i.pravatar.cc/150?u=user1', imageUrl: 'https://picsum.photos/seed/post1/500/500', caption: 'Pemandangan dari atas bukit. #travel' },
-  { id: 'post2', username: 'citra_lestari', avatarUrl: 'https://i.pravatar.cc/150?u=user2', imageUrl: 'https://picsum.photos/seed/post2/500/500', caption: 'Kopi sore ini. ☕️' },
+  { id: 'post1', username: 'budi_santoso', avatarColor: getRandomColor(), postColor: getRandomColor(), caption: 'Pemandangan dari atas bukit. #travel' },
+  { id: 'post2', username: 'citra_lestari', avatarColor: getRandomColor(), postColor: getRandomColor(), caption: 'Kopi sore ini. ☕️' },
+  { id: 'post3', username: 'dewi_persik', avatarColor: getRandomColor(), postColor: getRandomColor(), caption: 'Kucing baru!' },
 ];
 
 const Stories = () => (
@@ -22,7 +32,7 @@ const Stories = () => (
     <FlatList data={storiesData} keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => (
         <View style={styles.storyItem}>
-          <Image source={{ uri: item.avatarUrl }} style={styles.storyAvatar} />
+          <View style={[styles.storyAvatar, { backgroundColor: item.color }]} />
           <Text style={styles.storyUsername}>{item.username}</Text>
         </View>
       )}
@@ -32,9 +42,14 @@ const Stories = () => (
 
 const Post = ({ post }) => (
   <View style={styles.postContainer}>
-    <View style={styles.postHeader}><Image source={{ uri: post.avatarUrl }} style={styles.postAvatar} /><Text style={styles.postUsername}>{post.username}</Text></View>
-    <Image source={{ uri: post.imageUrl }} style={styles.postImage} />
-    <View style={styles.postFooter}><Text style={styles.postCaption}><Text style={{ fontWeight: 'bold' }}>{post.username}</Text> {post.caption}</Text></View>
+    <View style={styles.postHeader}>
+      <View style={[styles.postAvatar, { backgroundColor: post.avatarColor }]} />
+      <Text style={styles.postUsername}>{post.username}</Text>
+    </View>
+    <View style={[styles.postImage, { backgroundColor: post.postColor }]} />
+    <View style={styles.postFooter}>
+      <Text style={styles.postCaption}><Text style={{ fontWeight: 'bold' }}>{post.username}</Text> {post.caption}</Text>
+    </View>
   </View>
 );
 
